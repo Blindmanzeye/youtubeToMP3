@@ -15,7 +15,7 @@ def videoToAudio(videoPath: str):
     
 
 if __name__ == "__main__":
-    print("This is Youtoob audio file downloader by your little brother")
+    print("This is Youtoob audio file downloader")
     print("All audio files will be downloaded to your desktop")
     linkloop = True
     while linkloop:
@@ -23,30 +23,14 @@ if __name__ == "__main__":
         video_url = input("Youtube Link Here: ")
 
         # Create a YouTube object
-        yt = YouTube(video_url, "WEB", on_progress_callback=on_progress)
+        yt = YouTube(video_url, on_progress_callback=on_progress)
+        print(yt.title)
 
-        # Display video title
-        print(f"Video Title: {yt.title}")
-
-        # Select the best audio stream
-        audio_stream = yt.streams.get_audio_only()
-
-        # Specify the download location (or leave blank for the current directory)
+        ys = yt.streams.get_highest_resolution()
         userPath = os.environ['USERPROFILE']
-        download_location = userPath + r"\Desktop\downloadedSongs"
+        download_location = userPath + r"\Desktop\downloadedYT"
         os.makedirs(download_location, exist_ok=True)
-
-        # Download the audio
-        print("Downloading audio...")
-        audio_stream.download(output_path=download_location)
-        print("Download completed!")
-
-        # This part of code is for if the downloaded file is an mp4
-        # videoPath = download_location + rf"\{yt.title}.mp4"
-        # videoToAudio(videoPath)
-        # print("MP3 File downloaded, Preparing for temp mp4 file deletion")
-        # time.sleep(10)
-        # os.remove(videoPath)
+        ys.download(output_path=download_location)
 
         if input("Download another file? (y/n): ").lower() == "n":
             linkloop = False
